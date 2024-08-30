@@ -5,20 +5,14 @@ A big press and hold button component for React native
 ## Installation
 
 ```sh
-npm install react-native-press-and-hold-button
+yarn add react-native-press-and-hold-button
 ```
 
 ## Usage
 
-
 ```js
-import { multiply } from 'react-native-press-and-hold-button';
 
-// ...
-
-const result = await multiply(3, 7);
 ```
-
 
 ## Contributing
 

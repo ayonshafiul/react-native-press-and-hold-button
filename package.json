@@ -1,7 +1,7 @@
 {
   "name": "react-native-press-and-hold-button",
-  "version": "0.1.0",
-  "description": "A big press and hold button component for React native",
+  "version": "0.0.1",
+  "description": "A customizable press and hold button component for React Native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
   "module": "./lib/module/index.js",
@@ -53,7 +53,7 @@
     "type": "git",
     "url": "git+https://github.com/ayonshafiul/react-native-press-and-hold-button.git"
   },
-  "author": "ayonshafiul <ayonshafiul@gmail.com> (https://github.com/ayonshafiul/react-native-press-and-hold-button)",
+  "author": "ayonshafiul <ayonshafiul@gmail.com> (https://github.com/ayonshafiul)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/ayonshafiul/react-native-press-and-hold-button/issues"
@@ -87,7 +87,8 @@
   },
   "peerDependencies": {
     "react": "*",
-    "react-native": "*"
+    "react-native": "*",
+    "react-native-svg": "*"
   },
   "workspaces": [
     "example"
