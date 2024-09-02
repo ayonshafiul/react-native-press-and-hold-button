@@ -4,11 +4,27 @@ A big press and hold button component for React native
 
 ## Installation
 
+If you're using expo, `react-native-svg` is already included with the expo client, so no need to do anything.
+
+If you're using react-native-cli and haven't setup `react-native-svg` make sure to follow [Installation](https://www.npmjs.com/package/react-native-svg#installation) steps first
+
 ```sh
 yarn add react-native-press-and-hold-button
 ```
 
-## Demo (click to play)
+Or
+
+```sh
+npm install react-native-press-and-hold-button
+```
+
+![npm](https://img.shields.io/npm/v/react-native-press-and-hold-button)
+![NPM](https://img.shields.io/npm/l/react-native-press-and-hold-button)
+![GitHub issues](https://img.shields.io/github/issues/ayonshafiul/react-native-press-and-hold-button)
+![npm bundle size](https://img.shields.io/bundlephobia/min/react-native-press-and-hold-button)
+![npm](https://img.shields.io/npm/dw/react-native-press-and-hold-button)
+![GitHub forks](https://img.shields.io/github/forks/ayonshafiul/react-native-press-and-hold-button)
+![GitHub Repo stars](https://img.shields.io/github/stars/ayonshafiul/react-native-press-and-hold-button)
 
 ![Image](https://peyara-remote-mouse.vercel.app/press-and-hold-button.gif)
 
@@ -69,14 +85,14 @@ const styles = StyleSheet.create({
 
 ## Props
 
-| Prop                | Type                           | Description                                                                                                           | Required |
-| ------------------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------- | -------- |
-| **`size`**          | `number`                       | The size of the button (width and height).                                                                            | Yes      |
-| **`onToggle`**      | `(isOn: boolean) => void`      | Callback function that is triggered when the button is toggled.                                                       | Yes      |
-| `renderChild`       | `(isOn: boolean) => ReactNode` | A function that renders a child component based on the `isOn` state. If not provided, no child component is rendered. | No       |
-| `containerStyle`    | `ViewStyle`                    | Style object to apply to the container of the button.                                                                 | No       |
-| `circleProps`       | `CircleProps`                  | Props to be passed to the circle element inside the button.                                                           | No       |
-| `longPressDuration` | `number`                       | Duration (in milliseconds) that defines how long the button must be pressed to trigger a long press.                  | No       |
+| Property            | Type                                | Required | Description                                                               |
+| ------------------- | ----------------------------------- | -------- | ------------------------------------------------------------------------- |
+| **`size`**          | `number`                            | **Yes**  | The size of the button.                                                   |
+| **`onToggle`**      | `(state: ButtonState) => void`      | **Yes**  | A function that is called when the button's state is toggled.             |
+| `renderChild`       | `(state: ButtonState) => ReactNode` | No       | A function that takes the `ButtonState` and returns a ReactNode.          |
+| `containerStyle`    | `ViewStyle`                         | No       | Optional style for the container.                                         |
+| `circleProps`       | `CircleProps`                       | No       | Optional properties for the circle element (assumed to be a custom type). |
+| `longPressDuration` | `number`                            | No       | The duration (in milliseconds) for the long press to be recognized.       |
 
 ## Contributing
 
