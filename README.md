@@ -10,15 +10,11 @@ yarn add react-native-press-and-hold-button
 
 ## Demo (click to play)
 
-<video width="300" height="600" controls>
-  <source src="https://peyara-remote-mouse.vercel.app/press-and-hold-button.mp4" type="video/mp4">
-Your browser does not support the video tag.
-</video>
+![Image](https://peyara-remote-mouse.vercel.app/press-and-hold-button.gif)
 
 ## Usage
 
 ```js
-/* eslint-disable react-native/no-inline-styles */
 import { StyleSheet, Text, View } from 'react-native';
 
 import PressAndHoldButton from 'react-native-press-and-hold-button';
@@ -55,6 +51,7 @@ export default function App() {
         circleProps={{
           strokeWidth: 5,
           strokeColor: 'black',
+          strokeLineCap: 'round',
         }}
       />
     </View>

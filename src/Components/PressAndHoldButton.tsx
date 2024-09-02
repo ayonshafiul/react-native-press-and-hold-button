@@ -17,7 +17,8 @@ const AnimatedSvg = Animated.createAnimatedComponent(Svg);
 
 export type CircleProps = {
   strokeWidth: number;
-  strokeColor?: string;
+  strokeColor: string;
+  strokeLineCap: 'butt' | 'round' | 'square';
 };
 
 export type PressAndHoldButtonProps = {
@@ -35,6 +36,7 @@ export default function PressAndHoldButton({
   circleProps = {
     strokeWidth: 10,
     strokeColor: 'black',
+    strokeLineCap: 'round',
   },
   size = width - circleProps.strokeWidth,
   containerStyle,
@@ -127,7 +129,7 @@ export default function PressAndHoldButton({
           cy={size / 2}
           r={radius}
           strokeWidth={circleProps.strokeWidth}
-          strokeLinecap={'round'}
+          strokeLinecap={circleProps.strokeLineCap}
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           transform={`rotate(-90 ${size / 2} ${size / 2})`}

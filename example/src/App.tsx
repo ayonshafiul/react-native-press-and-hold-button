@@ -34,6 +34,7 @@ export default function App() {
         circleProps={{
           strokeWidth: 5,
           strokeColor: 'black',
+          strokeLineCap: 'round',
         }}
       />
     </View>

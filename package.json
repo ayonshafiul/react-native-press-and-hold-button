@@ -47,7 +47,11 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "press",
+    "hold",
+    "long press",
+    "button"
   ],
   "repository": {
     "type": "git",
