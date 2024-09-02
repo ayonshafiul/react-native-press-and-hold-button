@@ -21,18 +21,21 @@ export type CircleProps = {
   strokeLineCap: 'butt' | 'round' | 'square';
 };
 
+export type ButtonState = 'on' | 'off' | 'loading';
+
+export type AnimationState = 'loading' | 'done';
+
 export type PressAndHoldButtonProps = {
-  renderChild?: (isOn: boolean) => ReactNode;
+  renderChild?: (state: ButtonState) => ReactNode;
   containerStyle?: ViewStyle;
   size: number;
   circleProps?: CircleProps;
-  onToggle: (isOn: boolean) => void;
+  onToggle: (state: ButtonState) => void;
   longPressDuration?: number;
 };
 
 export default function PressAndHoldButton({
   renderChild,
-
   circleProps = {
     strokeWidth: 10,
     strokeColor: 'black',
@@ -43,8 +46,8 @@ export default function PressAndHoldButton({
   onToggle = () => {},
   longPressDuration = 1200,
 }: PressAndHoldButtonProps) {
-  const [isOn, setIsOn] = useState<boolean>(true);
-  const { Value, timing, spring, sequence } = Animated;
+  const [buttonState, setButtonState] = useState<ButtonState>('off');
+  const { Value, timing, spring, sequence, loop } = Animated;
 
   const progress = useRef(new Value(0)).current;
   const scale = useRef(new Value(1)).current;
@@ -70,26 +73,29 @@ export default function PressAndHoldButton({
       useNativeDriver: true,
     }).start();
   };
-  const scaleComplete = (toggleValue: boolean) => {
-    sequence([
-      spring(scale, {
-        toValue: 1.1,
-        speed: 10,
-        useNativeDriver: true,
-      }),
-      spring(scale, {
+  const scaleLoading = (state: AnimationState) => {
+    if (state == 'loading') {
+      loop(
+        sequence([
+          spring(scale, {
+            toValue: 1.1,
+            speed: 10,
+            useNativeDriver: true,
+          }),
+          spring(scale, {
+            toValue: 1,
+            speed: 10,
+            useNativeDriver: true,
+          }),
+        ])
+      ).start();
+    } else {
+      timing(scale, {
         toValue: 1,
-        speed: 10,
-        useNativeDriver: true,
-      }),
-      timing(progress, {
-        toValue: 0,
         duration: longPressDuration / 4,
         useNativeDriver: true,
-      }),
-    ]).start(() => {
-      setIsOn(toggleValue);
-    });
+      }).start();
+    }
   };
 
   return (
@@ -105,8 +111,18 @@ export default function PressAndHoldButton({
         containerStyle,
       ]}
       onLongPress={async () => {
-        await onToggle(!isOn);
-        scaleComplete(!isOn);
+        let nextButtonState: ButtonState = buttonState === 'on' ? 'off' : 'on';
+        scaleLoading('loading');
+        try {
+          await new Promise((resolve, _) =>
+            setTimeout(resolve, longPressDuration / 2)
+          );
+          await onToggle(nextButtonState);
+          setButtonState(nextButtonState);
+        } catch (err) {
+        } finally {
+          scaleLoading('done');
+        }
       }}
       delayLongPress={longPressDuration}
       onPressIn={() => {
@@ -142,7 +158,7 @@ export default function PressAndHoldButton({
             alignItems: 'center',
           }}
         >
-          {typeof renderChild === 'function' ? renderChild(isOn) : null}
+          {typeof renderChild === 'function' ? renderChild(buttonState) : null}
         </View>
       </AnimatedSvg>
     </TouchableOpacity>

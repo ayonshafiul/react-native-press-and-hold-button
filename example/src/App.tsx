@@ -2,21 +2,20 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import PressAndHoldButton from 'react-native-press-and-hold-button';
+import type { ButtonState } from '../../src/Components/PressAndHoldButton';
 
 export default function App() {
   return (
     <View style={styles.container}>
       <PressAndHoldButton
         size={200}
-        onToggle={(isOn) => {
-          console.log('isOn', isOn);
-        }}
-        renderChild={(isOn) => {
+        onToggle={async () => {}}
+        renderChild={(state: ButtonState) => {
           return (
             <View
               style={[
                 {
-                  backgroundColor: isOn ? 'green' : 'red',
+                  backgroundColor: state === 'on' ? 'green' : 'red',
                   width: 160,
                   height: 160,
                   borderRadius: 80,
@@ -26,7 +25,7 @@ export default function App() {
               ]}
             >
               <Text style={{ color: 'white' }}>
-                {isOn ? 'Button is On' : 'Button is Off'}
+                {state === 'on' ? 'Button is On' : 'Button is Off'}
               </Text>
             </View>
           );
