@@ -39,17 +39,24 @@ export default function App() {
   return (
     <View style={styles.container}>
       <PressAndHoldButton
-        size={200}
-        onToggle={(isOn) => {
-          console.log('isOn', isOn);
-          // do stuff here with the button state
+        size={190}
+        onToggle={async () => {
+          // simulate long api calls waiting time
+          await new Promise((resolve, _) => setTimeout(resolve, 5000));
+          // error out the response
+          // throw new Error('Simulate error');
         }}
-        renderChild={(isOn) => {
+        onError={(err) => console.log((err as Error).message)}
+        renderChild={(isOn: boolean, isLoading: boolean) => {
           return (
             <View
               style={[
                 {
-                  backgroundColor: isOn ? 'green' : 'red',
+                  backgroundColor: isLoading
+                    ? '#B2BEB5'
+                    : isOn
+                      ? 'green'
+                      : 'red',
                   width: 160,
                   height: 160,
                   borderRadius: 80,
@@ -59,7 +66,11 @@ export default function App() {
               ]}
             >
               <Text style={{ color: 'white' }}>
-                {isOn ? 'Button is On' : 'Button is Off'}
+                {isLoading
+                  ? 'Loading...'
+                  : isOn
+                    ? 'Button is On'
+                    : 'Button is Off'}
               </Text>
             </View>
           );
@@ -81,18 +92,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
 ```
 
 ## Props
 
-| Property            | Type                                | Required | Description                                                               |
-| ------------------- | ----------------------------------- | -------- | ------------------------------------------------------------------------- |
-| **`size`**          | `number`                            | **Yes**  | The size of the button.                                                   |
-| **`onToggle`**      | `(state: ButtonState) => void`      | **Yes**  | A function that is called when the button's state is toggled.             |
-| `renderChild`       | `(state: ButtonState) => ReactNode` | No       | A function that takes the `ButtonState` and returns a ReactNode.          |
-| `containerStyle`    | `ViewStyle`                         | No       | Optional style for the container.                                         |
-| `circleProps`       | `CircleProps`                       | No       | Optional properties for the circle element (assumed to be a custom type). |
-| `longPressDuration` | `number`                            | No       | The duration (in milliseconds) for the long press to be recognized.       |
+| **Prop Name**     | **Type**                                          | **Required** | **Description**                                   |
+| ----------------- | ------------------------------------------------- | ------------ | ------------------------------------------------- |
+| **size**          | number                                            | Yes          | Specifies the size of the button.                 |
+| onToggle          | (state: boolean) => void                          | Yes          | Function called when the button is toggled.       |
+| renderChild       | (state: boolean, isLoading: boolean) => ReactNode | No           | Optional function to render custom child content. |
+| containerStyle    | ViewStyle                                         | No           | Style for the button container.                   |
+| circleProps       | CircleProps                                       | No           | Optional props for the circle component.          |
+| onError           | (err: any) => void                                | No           | Callback for handling errors.                     |
+| longPressDuration | number                                            | No           | Duration (in ms) to trigger the long press event. |
+
+`CircleProps`
+
+| **Prop Name**     | **Type**                      | **Required** | **Description**                             |
+| ----------------- | ----------------------------- | ------------ | ------------------------------------------- |
+| **strokeWidth**   | number                        | Yes          | Specifies the width of the circle's stroke. |
+| **strokeColor**   | string                        | Yes          | Defines the color of the circle's stroke.   |
+| **strokeLineCap** | 'butt' \| 'round' \| 'square' | Yes          | Determines the shape of the stroke ends.    |
 
 ## Contributing
 

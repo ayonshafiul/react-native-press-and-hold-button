@@ -20,7 +20,11 @@ export default function App() {
             <View
               style={[
                 {
-                  backgroundColor: isOn ? 'green' : 'red',
+                  backgroundColor: isLoading
+                    ? '#B2BEB5'
+                    : isOn
+                      ? 'green'
+                      : 'red',
                   width: 160,
                   height: 160,
                   borderRadius: 80,
@@ -30,14 +34,18 @@ export default function App() {
               ]}
             >
               <Text style={{ color: 'white' }}>
-                {isLoading ? 'Loading...' : isOn ? 'On' : 'Off'}
+                {isLoading
+                  ? 'Loading...'
+                  : isOn
+                    ? 'Button is On'
+                    : 'Button is Off'}
               </Text>
             </View>
           );
         }}
         circleProps={{
-          strokeWidth: 8,
-          strokeColor: '#00ffff',
+          strokeWidth: 5,
+          strokeColor: 'black',
           strokeLineCap: 'round',
         }}
       />
