@@ -2,20 +2,25 @@
 import { StyleSheet, Text, View } from 'react-native';
 
 import PressAndHoldButton from 'react-native-press-and-hold-button';
-import type { ButtonState } from '../../src/Components/PressAndHoldButton';
 
 export default function App() {
   return (
     <View style={styles.container}>
       <PressAndHoldButton
-        size={200}
-        onToggle={async () => {}}
-        renderChild={(state: ButtonState) => {
+        size={190}
+        onToggle={async () => {
+          // simulate long api calls waiting time
+          await new Promise((resolve, _) => setTimeout(resolve, 5000));
+          // error out the response
+          // throw new Error('Simulate error');
+        }}
+        onError={(err) => console.log((err as Error).message)}
+        renderChild={(isOn: boolean, isLoading: boolean) => {
           return (
             <View
               style={[
                 {
-                  backgroundColor: state === 'on' ? 'green' : 'red',
+                  backgroundColor: isOn ? 'green' : 'red',
                   width: 160,
                   height: 160,
                   borderRadius: 80,
@@ -25,14 +30,14 @@ export default function App() {
               ]}
             >
               <Text style={{ color: 'white' }}>
-                {state === 'on' ? 'Button is On' : 'Button is Off'}
+                {isLoading ? 'Loading...' : isOn ? 'On' : 'Off'}
               </Text>
             </View>
           );
         }}
         circleProps={{
-          strokeWidth: 5,
-          strokeColor: 'black',
+          strokeWidth: 8,
+          strokeColor: '#00ffff',
           strokeLineCap: 'round',
         }}
       />

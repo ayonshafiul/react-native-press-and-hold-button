@@ -21,16 +21,15 @@ export type CircleProps = {
   strokeLineCap: 'butt' | 'round' | 'square';
 };
 
-export type ButtonState = 'on' | 'off' | 'loading';
-
 export type AnimationState = 'loading' | 'done';
 
 export type PressAndHoldButtonProps = {
-  renderChild?: (state: ButtonState) => ReactNode;
+  renderChild?: (state: boolean, isLoading: boolean) => ReactNode;
   containerStyle?: ViewStyle;
   size: number;
   circleProps?: CircleProps;
-  onToggle: (state: ButtonState) => void;
+  onToggle: (state: boolean) => void;
+  onError?: (err: any) => void;
   longPressDuration?: number;
 };
 
@@ -44,9 +43,11 @@ export default function PressAndHoldButton({
   size = width - circleProps.strokeWidth,
   containerStyle,
   onToggle = () => {},
+  onError = (_: any) => {},
   longPressDuration = 1200,
 }: PressAndHoldButtonProps) {
-  const [buttonState, setButtonState] = useState<ButtonState>('off');
+  const [isOn, setIsOn] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const { Value, timing, spring, sequence, loop } = Animated;
 
   const progress = useRef(new Value(0)).current;
@@ -74,7 +75,7 @@ export default function PressAndHoldButton({
     }).start();
   };
   const scaleLoading = (state: AnimationState) => {
-    if (state == 'loading') {
+    if (state === 'loading') {
       loop(
         sequence([
           spring(scale, {
@@ -111,16 +112,19 @@ export default function PressAndHoldButton({
         containerStyle,
       ]}
       onLongPress={async () => {
-        let nextButtonState: ButtonState = buttonState === 'on' ? 'off' : 'on';
+        let nextButtonState: boolean = !isOn;
         scaleLoading('loading');
+        setIsLoading(true);
         try {
           await new Promise((resolve, _) =>
             setTimeout(resolve, longPressDuration / 2)
           );
           await onToggle(nextButtonState);
-          setButtonState(nextButtonState);
-        } catch (err) {
+          setIsOn(nextButtonState);
+        } catch (err: any) {
+          onError(err);
         } finally {
+          setIsLoading(false);
           scaleLoading('done');
         }
       }}
@@ -158,7 +162,9 @@ export default function PressAndHoldButton({
             alignItems: 'center',
           }}
         >
-          {typeof renderChild === 'function' ? renderChild(buttonState) : null}
+          {typeof renderChild === 'function'
+            ? renderChild(isOn, isLoading)
+            : null}
         </View>
       </AnimatedSvg>
     </TouchableOpacity>
