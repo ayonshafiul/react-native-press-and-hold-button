@@ -1,6 +1,6 @@
 {
   "name": "react-native-press-and-hold-button",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "A customizable press and hold button component for React Native",
   "source": "./src/index.tsx",
   "main": "./lib/commonjs/index.js",
