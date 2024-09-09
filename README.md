@@ -97,15 +97,17 @@ const styles = StyleSheet.create({
 
 ## Props
 
-| **Prop Name**     | **Type**                                          | **Required** | **Description**                                   |
-| ----------------- | ------------------------------------------------- | ------------ | ------------------------------------------------- |
-| **size**          | number                                            | Yes          | Specifies the size of the button.                 |
-| onToggle          | (state: boolean) => void                          | Yes          | Function called when the button is toggled.       |
-| renderChild       | (state: boolean, isLoading: boolean) => ReactNode | No           | Optional function to render custom child content. |
-| containerStyle    | ViewStyle                                         | No           | Style for the button container.                   |
-| circleProps       | CircleProps                                       | No           | Optional props for the circle component.          |
-| onError           | (err: any) => void                                | No           | Callback for handling errors.                     |
-| longPressDuration | number                                            | No           | Duration (in ms) to trigger the long press event. |
+| **Prop Name**           | **Type**                                          | **Required** | **Description**                                     |
+| ----------------------- | ------------------------------------------------- | ------------ | --------------------------------------------------- |
+| **size**                | number                                            | Yes          | Specifies the size of the button.                   |
+| **onToggle**            | (state: boolean) => void                          | Yes          | Function called when the button is toggled.         |
+| renderChild             | (state: boolean, isLoading: boolean) => ReactNode | No           | Optional function to render custom child content.   |
+| containerStyle          | ViewStyle                                         | No           | Style for the button container.                     |
+| circleProps             | CircleProps                                       | No           | Optional props for the circle component.            |
+| onError                 | (err: any) => void                                | No           | Callback for handling errors.                       |
+| longPressDuration       | number                                            | No           | Duration (in ms) to trigger the long press event.   |
+| loadingAnimationEnabled | boolean                                           | No           | Enables or disables the loading animation.          |
+| loadingAnimation        | 'scale' \| 'bounce'                               | No           | Specifies the type of loading animation if enabled. |
 
 `CircleProps`
 

@@ -48,6 +48,7 @@ export default function App() {
           strokeColor: 'black',
           strokeLineCap: 'round',
         }}
+        loadingAnimation="bounce"
       />
     </View>
   );
