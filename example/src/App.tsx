@@ -1,13 +1,14 @@
 /* eslint-disable react-native/no-inline-styles */
 import { StyleSheet, Text, View } from 'react-native';
 
-import PressAndHoldButton from 'react-native-press-and-hold-button';
+import { PressAndHoldButtonSemiCircle } from 'react-native-press-and-hold-button';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <PressAndHoldButton
-        size={190}
+      <PressAndHoldButtonSemiCircle
+        width={400}
+        height={300}
         onToggle={async () => {
           // simulate long api calls waiting time
           await new Promise((resolve, _) => setTimeout(resolve, 5000));
@@ -17,30 +18,13 @@ export default function App() {
         onError={(err) => console.log((err as Error).message)}
         renderChild={(isOn: boolean, isLoading: boolean) => {
           return (
-            <View
-              style={[
-                {
-                  backgroundColor: isLoading
-                    ? '#B2BEB5'
-                    : isOn
-                      ? 'green'
-                      : 'red',
-                  width: 160,
-                  height: 160,
-                  borderRadius: 80,
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                },
-              ]}
-            >
-              <Text style={{ color: 'white' }}>
-                {isLoading
-                  ? 'Loading...'
-                  : isOn
-                    ? 'Button is On'
-                    : 'Button is Off'}
-              </Text>
-            </View>
+            <Text style={{ color: 'white' }}>
+              {isLoading
+                ? 'Loading...'
+                : isOn
+                  ? 'Button is On'
+                  : 'Button is Off'}
+            </Text>
           );
         }}
         circleProps={{
