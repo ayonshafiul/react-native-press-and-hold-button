@@ -34,7 +34,6 @@ export type PressAndHoldButtonSemiCircleProps = {
   onToggle: (state: boolean) => void;
   onError?: (err: any) => void;
   longPressDuration?: number;
-
   loadingAnimation?: LoadingAnimation;
 };
 
