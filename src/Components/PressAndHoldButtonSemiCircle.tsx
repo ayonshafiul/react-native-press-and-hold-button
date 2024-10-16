@@ -19,21 +19,22 @@ export type CircleProps = {
   strokeWidth: number;
   strokeColor: string;
   strokeLineCap: 'butt' | 'round' | 'square';
+  semiCircleColor: string;
+  semiCircleOffset: number;
 };
 
-export type AnimationState = 'loading' | 'done';
-export type LoadingAnimation = 'scale' | 'bounce';
+export type LoadingAnimation = 'scale' | 'bounce' | 'none';
 
 export type PressAndHoldButtonSemiCircleProps = {
   renderChild?: (state: boolean, isLoading: boolean) => ReactNode;
   containerStyle?: ViewStyle;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   circleProps?: CircleProps;
   onToggle: (state: boolean) => void;
   onError?: (err: any) => void;
   longPressDuration?: number;
-  loadingAnimationEnabled?: boolean;
+
   loadingAnimation?: LoadingAnimation;
 };
 
@@ -43,6 +44,8 @@ export default function PressAndHoldButtonSemiCircle({
     strokeWidth: 10,
     strokeColor: 'black',
     strokeLineCap: 'round',
+    semiCircleColor: 'red',
+    semiCircleOffset: 10,
   },
   width = w - 32,
   height = 150,
@@ -51,11 +54,10 @@ export default function PressAndHoldButtonSemiCircle({
   onError = (_: any) => {},
   longPressDuration = 1200,
   loadingAnimation = 'bounce',
-  loadingAnimationEnabled = true,
 }: PressAndHoldButtonSemiCircleProps) {
   const [isOn, setIsOn] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const { Value, timing, spring, sequence, loop } = Animated;
+  const { Value, timing, sequence, loop } = Animated;
 
   const progress = useRef(new Value(0)).current;
   const bounce = useRef(new Value(0)).current;
@@ -82,22 +84,22 @@ export default function PressAndHoldButtonSemiCircle({
       useNativeDriver: true,
     }).start();
   };
-  const runLoadingAnimation = (state: AnimationState) => {
-    if (!loadingAnimationEnabled) {
+  const runLoadingAnimation = (start: boolean) => {
+    if (loadingAnimation === 'none') {
       return;
     }
-    if (state === 'loading') {
+    if (start) {
       if (loadingAnimation === 'scale') {
         loop(
           sequence([
-            spring(scale, {
+            timing(scale, {
               toValue: 1.05,
-              speed: 10,
+              duration: longPressDuration / 4,
               useNativeDriver: true,
             }),
-            spring(scale, {
+            timing(scale, {
               toValue: 1,
-              speed: 10,
+              duration: longPressDuration / 4,
               useNativeDriver: true,
             }),
           ])
@@ -106,13 +108,13 @@ export default function PressAndHoldButtonSemiCircle({
         loop(
           sequence([
             timing(bounce, {
-              toValue: -10, // Move 10 units to the right
-              duration: 450, // Faster movement
+              toValue: -5, // up
+              duration: 450,
               useNativeDriver: true,
             }),
             timing(bounce, {
-              toValue: 10, // Move 10 units to the left
-              duration: 110, // Faster movement
+              toValue: 5, // down
+              duration: 110,
               useNativeDriver: true,
             }),
             timing(bounce, {
@@ -154,7 +156,7 @@ export default function PressAndHoldButtonSemiCircle({
       ]}
       onLongPress={async () => {
         let nextButtonState: boolean = !isOn;
-        runLoadingAnimation('loading');
+        runLoadingAnimation(true);
         setIsLoading(true);
         try {
           await new Promise((resolve, _) =>
@@ -166,7 +168,7 @@ export default function PressAndHoldButtonSemiCircle({
           onError(err);
         } finally {
           setIsLoading(false);
-          runLoadingAnimation('done');
+          runLoadingAnimation(false);
         }
       }}
       delayLongPress={longPressDuration}
@@ -183,7 +185,6 @@ export default function PressAndHoldButtonSemiCircle({
         height={height}
         style={{
           transform: [{ scale: scale }, { translateY: bounce }],
-          backgroundColor: 'magenta',
         }}
       >
         <AnimatedCircle
@@ -196,14 +197,14 @@ export default function PressAndHoldButtonSemiCircle({
           strokeWidth={circleProps.strokeWidth}
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
-          transform={`rotate(-180 ${width / 2} ${height / 2}) translate(0 ${-radius})`}
+          transform={`rotate(-180 ${width / 2} ${height / 2}) translate(0 ${-radius + circleProps.semiCircleOffset})`}
         />
         <Circle
-          fill="yellow"
+          fill={circleProps.semiCircleColor}
           cx={width / 2}
           cy={height / 2}
           r={radius * 0.98}
-          transform={`rotate(-180 ${width / 2} ${height / 2}) translate(0 ${-radius})`}
+          transform={`rotate(-180 ${width / 2} ${height / 2}) translate(0 ${-radius + circleProps.semiCircleOffset})`}
         />
         <View
           style={{

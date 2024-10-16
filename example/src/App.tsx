@@ -1,14 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
-import { StyleSheet, Text, View } from 'react-native';
+import { Dimensions, StyleSheet, Text, View } from 'react-native';
 
 import { PressAndHoldButtonSemiCircle } from 'react-native-press-and-hold-button';
+const width = Dimensions.get('window').width;
 
 export default function App() {
   return (
     <View style={styles.container}>
       <PressAndHoldButtonSemiCircle
-        width={400}
-        height={300}
+        width={width}
+        height={100}
         onToggle={async () => {
           // simulate long api calls waiting time
           await new Promise((resolve, _) => setTimeout(resolve, 5000));
@@ -31,8 +32,11 @@ export default function App() {
           strokeWidth: 5,
           strokeColor: 'black',
           strokeLineCap: 'round',
+          semiCircleColor: 'red',
+          semiCircleOffset: 34,
         }}
-        loadingAnimation="bounce"
+        loadingAnimation="scale"
+        longPressDuration={2000}
       />
     </View>
   );
